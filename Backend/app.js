@@ -17,10 +17,9 @@ app.use(express.static("public"));
 app.use(cookieParser());
 
 //imports routes
+import authRouter from "./routes/auth.route.js";
 
 //route declaration
-app.get("/", (req, res) => {
-  res.send("Hello World !");
-});
+app.use("/api/v1/users/auth", authRouter);
 
 export { app };
