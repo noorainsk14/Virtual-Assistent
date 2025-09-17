@@ -1,17 +1,13 @@
-import express from "express";
+import { app } from "./app.js";
 import "dotenv/config";
 import connectToDb from "./config/db.config.js";
 
-connectToDb();
-
-const app = express();
-
-const PORT = 8000;
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-
-app.listen(PORT, () => {
-  console.log("Server is listening to PORT 8000");
-});
+connectToDb()
+  .then(() => {
+    app.listen(process.env.PORT || 8080, () => {
+      console.log(`Server is running at port: ${process.env.PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.log("MongoDb connection failed !!", err);
+  });
