@@ -7,37 +7,35 @@ import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
 import UserDataContext from "../../context/userContext";
-const SignUp = () => {
+const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { serverUrl } = useContext(UserDataContext);
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const handleSignUp = async (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
-    setErr(null);
-    setLoading(true);
+    setErr("");
     try {
       await axios.post(
-        `${serverUrl}/auth/signup`,
+        `${serverUrl}/auth/login`,
         {
-          username,
           email,
           password,
         },
         { withCredentials: true }
       );
-      toast.success("Signup successful! ");
+      toast.success("SignIn successful! ");
       setTimeout(() => {
-        navigate("/sign-in");
+        navigate("/Home");
       }, 1500);
     } catch (error) {
-      console.log(error.message);
-      toast.error("Signup failed. Please try again.");
+      console.log(error);
+
+      toast.error("SignIn failed. Please try again.");
       setErr(error?.response?.data?.message);
       setPassword("");
     } finally {
@@ -69,26 +67,17 @@ const SignUp = () => {
         }}
       />
       <form
-        onSubmit={handleSignUp}
+        onSubmit={handleSignIn}
         className="w-[90%] h-[600px] max-w-[500px] bg-[#00000062] backdrop-blur shadow-lg shadow-black flex flex-col items-center justify-center gap-[20px] px-[20px]"
       >
         <h1 className="text-white text-[30px] font-semibold mb-[30px]">
-          Register to <span className="text-blue-400">Virtual Assistant</span>
+          Sign In to <span className="text-blue-400">Virtual Assistant</span>
         </h1>
-        <input
-          type="text"
-          placeholder="Enter Your Username "
-          className="w-full h-[60px] outline-none  border-2 border-white bg-transparent text-white placeholder-gray-300 px-[20px] py-[10px] rounded-full text-[18px]"
-          required
-          onChange={(e) => {
-            setUsername(e.target.value);
-            setErr(null);
-          }}
-          value={username}
-        />
+
         <input
           type="email"
           placeholder="Enter Your Email "
+          autoFocus
           className="w-full h-[60px] outline-none  border-2 border-white bg-transparent text-white placeholder-gray-300 px-[20px] py-[10px] rounded-full text-[18px]"
           required
           onChange={(e) => {
@@ -102,6 +91,7 @@ const SignUp = () => {
             type={showPassword ? "text" : "password"}
             minLength={6}
             placeholder="Enter Your Password "
+            autoFocus
             className="w-full h-full rounded-full outline-none text-[18px] bg-transparent placeholder-gray-300 px-[20px] py-[10px]"
             required
             onChange={(e) => {
@@ -129,20 +119,20 @@ const SignUp = () => {
           className="min-w-[150px] h-[60px] mt-[30px] text-black font-semibold bg-white rounded-full text-[19px]"
           disabled={loading}
         >
-          {loading ? "loading..." : "Sign Up"}
+          {loading ? "loading..." : "Sign In"}
         </button>
         <p
           className="text-white text-[18px] cursor-pointer"
           onClick={() => {
-            navigate("/sign-in");
+            navigate("/sign-Up");
           }}
         >
-          Already have an account ?{" "}
-          <span className="text-blue-400">Sign In</span>
+          Want to create new Account ?{" "}
+          <span className="text-blue-400">Sign Up</span>
         </p>
       </form>
     </div>
   );
 };
 
-export default SignUp;
+export default SignIn;

@@ -21,5 +21,8 @@ import authRouter from "./routes/auth.route.js";
 
 //route declaration
 app.use("/api/v1/users/auth", authRouter);
+app.get("/", (req, res) => {
+  res.send("Hello world");
+});
 
 export { app };

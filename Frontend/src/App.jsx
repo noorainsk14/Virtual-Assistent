@@ -1,3 +1,4 @@
+import { Toaster } from "react-hot-toast";
 import { Route, Routes } from "react-router-dom";
 import SignUp from "./components/signUp/SignUp";
 import SignIn from "./components/signIn/SignIn";
