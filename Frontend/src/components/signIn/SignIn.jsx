@@ -9,7 +9,7 @@ import axios from "axios";
 import UserDataContext from "../../context/userContext";
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { serverUrl } = useContext(UserDataContext);
+  const { serverUrl, userData, setUserData } = useContext(UserDataContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -20,7 +20,7 @@ const SignIn = () => {
     e.preventDefault();
     setErr("");
     try {
-      await axios.post(
+      const result = await axios.post(
         `${serverUrl}/auth/login`,
         {
           email,
@@ -28,13 +28,14 @@ const SignIn = () => {
         },
         { withCredentials: true }
       );
+      setUserData(result.data);
       toast.success("SignIn successful! ");
       setTimeout(() => {
-        navigate("/Home");
+        navigate("/");
       }, 1500);
     } catch (error) {
       console.log(error);
-
+      setUserData(null);
       toast.error("SignIn failed. Please try again.");
       setErr(error?.response?.data?.message);
       setPassword("");

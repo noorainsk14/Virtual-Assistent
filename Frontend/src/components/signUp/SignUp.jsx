@@ -4,12 +4,12 @@ import bg from "../../assets/authBg.png";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-
 import axios from "axios";
 import UserDataContext from "../../context/userContext";
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { serverUrl } = useContext(UserDataContext);
+  const { serverUrl, userData, setUserData } = useContext(UserDataContext);
+
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
@@ -22,7 +22,7 @@ const SignUp = () => {
     setErr(null);
     setLoading(true);
     try {
-      await axios.post(
+      const result = await axios.post(
         `${serverUrl}/auth/signup`,
         {
           username,
@@ -31,12 +31,14 @@ const SignUp = () => {
         },
         { withCredentials: true }
       );
+      setUserData(result.data);
       toast.success("Signup successful! ");
       setTimeout(() => {
-        navigate("/sign-in");
+        navigate("/customize");
       }, 1500);
     } catch (error) {
       console.log(error.message);
+      setUserData(null);
       toast.error("Signup failed. Please try again.");
       setErr(error?.response?.data?.message);
       setPassword("");
