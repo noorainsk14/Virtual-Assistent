@@ -18,11 +18,10 @@ app.use(cookieParser());
 
 //imports routes
 import authRouter from "./routes/auth.route.js";
+import userRouter from "./routes/user.route.js";
 
 //route declaration
 app.use("/api/v1/users/auth", authRouter);
-app.get("/", (req, res) => {
-  res.send("Hello world");
-});
+app.use("/api/v1/users/", userRouter);
 
 export { app };
