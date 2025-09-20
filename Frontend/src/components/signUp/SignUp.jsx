@@ -8,7 +8,7 @@ import axios from "axios";
 import UserDataContext from "../../context/userContext";
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { serverUrl, userData, setUserData } = useContext(UserDataContext);
+  const { serverUrl, _userData, setUserData } = useContext(UserDataContext);
 
   const navigate = useNavigate();
   const [username, setUsername] = useState("");

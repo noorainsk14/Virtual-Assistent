@@ -15,12 +15,8 @@ import UserDataContext from "../../context/userContext";
 
 const Customize = () => {
   const {
-    serverUrl,
-    userData,
-    setUserData,
     frontEndImage,
     setFrontEndImage,
-    backEndImage,
     setBackEndImage,
     selectedImage,
     setSelectedImage,
