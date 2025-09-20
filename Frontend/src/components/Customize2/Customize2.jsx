@@ -11,21 +11,19 @@ const Customize2 = () => {
     userData?.assistantName || ""
   );
 
-  const [loading, _setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleUpdateAssistant = async () => {
+    setLoading(true);
     try {
       let formData = new FormData();
       formData.append("assistantName", assistantName);
 
       if (backEndImage && backEndImage instanceof File) {
-        // Upload file if it's a File object
         formData.append("assistantImage", backEndImage);
       } else if (selectedImage && selectedImage !== "input") {
-        // Only send imageUrl if it's a valid URL (not "input")
         formData.append("imageUrl", selectedImage);
       } else {
-        // Neither file nor valid URL — maybe alert or prevent upload
         console.warn("No valid image selected.");
         return;
       }
@@ -33,9 +31,13 @@ const Customize2 = () => {
         withCredentials: true,
       });
 
+      setLoading(false);
       console.log(result.data);
       setUserData(result.data);
+      navigate("/");
     } catch (error) {
+      setLoading(false);
+
       console.log(error);
     }
   };
@@ -65,7 +67,7 @@ const Customize2 = () => {
           disabled={loading}
           onClick={() => {
             handleUpdateAssistant();
-            navigate("/customize2");
+            navigate("/");
           }}
         >
           {!loading ? "Finally create your assistant" : "Loading..."}
