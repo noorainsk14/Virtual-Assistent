@@ -12,6 +12,7 @@ import { FaImage } from "react-icons/fa6";
 import { useRef } from "react";
 import { useContext } from "react";
 import UserDataContext from "../../context/userContext";
+import { MdKeyboardBackspace } from "react-icons/md";
 
 const Customize = () => {
   const {
@@ -33,6 +34,12 @@ const Customize = () => {
 
   return (
     <div className="w-full h-[100vh] bg-gradient-to-t from-[black] to-[#030353] flex justify-center items-center flex-col p-[20px]">
+      <MdKeyboardBackspace
+        className="absolute top-[30px] left-[30px] text-white w-[25px] h-[25px] cursor-pointer"
+        onClick={() => {
+          navigate("/Home");
+        }}
+      />
       <h1 className="text-white mb-[30px] text-[30px] text-center">
         Select your <span className="text-blue-300">Assistant Image</span>
       </h1>
@@ -56,7 +63,10 @@ const Customize = () => {
           }}
         >
           {!frontEndImage && (
-            <FaImage className="text-white w-[30px] h-[30px]" />
+            <div>
+              <FaImage className="text-white w-[50px] h-[50px]" />
+              <p className="text-white">upload</p>
+            </div>
           )}
           {frontEndImage && (
             <img src={frontEndImage} className="h-full object-cover" />

@@ -20,20 +20,25 @@ export const updateAssistant = async (req, res) => {
   try {
     const { assistantName, imageUrl } = req.body;
     let assistantImage;
+
+    console.log("Received req.body:", req.body);
+    console.log("Received req.file:", req.file);
+
     if (req.file) {
       assistantImage = await uploadOnCloudinary(req.file.path);
     } else {
       assistantImage = imageUrl;
     }
-
-    const user = User.findByIdAndUpdate(
+    console.log("UserID:", req.userId);
+    console.log("Assistant image:", assistantImage);
+    const user = await User.findByIdAndUpdate(
       req.userId,
       {
         assistantName,
         assistantImage,
       },
       { new: true }
-    ).select(-password);
+    ).select("-password");
 
     res.status(200).json(user);
   } catch (error) {

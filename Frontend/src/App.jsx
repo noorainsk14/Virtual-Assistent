@@ -25,7 +25,7 @@ function App() {
       />
       <Route
         path="/sign-up"
-        element={!userData ? <SignUp /> : <Navigate to={"/"} />}
+        element={!userData ? <SignUp /> : <Navigate to={"/customize"} />}
       />
       <Route
         path="/sign-in"
@@ -33,11 +33,11 @@ function App() {
       />
       <Route
         path="/customize"
-        element={userData ? <Customize /> : <Navigate to={"/sign-in"} />}
+        element={userData ? <Customize /> : <Navigate to={"/sign-up"} />}
       />
       <Route
         path="/customize2"
-        element={userData ? <Customize2 /> : <Navigate to={"/sign-in"} />}
+        element={userData ? <Customize2 /> : <Navigate to={"/sign-up"} />}
       />
     </Routes>
   );

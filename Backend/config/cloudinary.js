@@ -1,7 +1,7 @@
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
 
-export default uploadOnCloudinary = async (filePath) => {
+const uploadOnCloudinary = async (filePath) => {
   cloudinary.config({
     cloud_name: process.env.CLOUDINARY_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
@@ -9,12 +9,13 @@ export default uploadOnCloudinary = async (filePath) => {
   });
 
   try {
-    // Upload an image
     const uploadResult = await cloudinary.uploader.upload(filePath);
-    fs.unlinkSync(filePath);
+    fs.unlinkSync(filePath); // delete file after upload
     return uploadResult.secure_url;
   } catch (error) {
     fs.unlinkSync(filePath);
-    return res.status(500).json({ message: "Cloudinary error !" });
+    throw error; // throw error up to caller
   }
 };
+
+export default uploadOnCloudinary;
