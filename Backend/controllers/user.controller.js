@@ -1,5 +1,7 @@
 import User from "../models/User.model.js";
 import uploadOnCloudinary from "../config/cloudinary.js";
+import geminiResponse from "../gemini.js";
+import moment from "moment/moment.js";
 
 export const getCurrentUser = async (req, res) => {
   try {
@@ -43,5 +45,73 @@ export const updateAssistant = async (req, res) => {
     res.status(200).json(user);
   } catch (error) {
     return res.status(500).json({ message: "Update Assistant error !" });
+  }
+};
+
+export const askToAssistant = async (req, res) => {
+  try {
+    const { command } = req.body;
+
+    const user = await User.findById(req.userId);
+    const userName = user.username;
+    const assistantName = user.assistantName;
+    const result = await geminiResponse(command, assistantName, userName);
+
+    const jsonMatch = result.match(/{[\s\S]*}/);
+    if (!jsonMatch) {
+      return res.status(400).json({ response: "sorry, i can't understand" });
+    }
+
+    const gemResult = JSON.parse(jsonMatch[0]);
+
+    const type = gemResult.type;
+
+    switch (type) {
+      case "get-date":
+        return res.json({
+          type,
+          userInput: gemResult.userInput,
+          response: `current date is ${moment().format("YYYY-MM-DD")}`,
+        });
+      case "get-time":
+        return res.json({
+          type,
+          userInput: gemResult.userInput,
+          response: `current time is ${moment().format("hh:mmA")}`,
+        });
+
+      case "get-day":
+        return res.json({
+          type,
+          userInput: gemResult.userInput,
+          response: `current day is ${moment().format("dddd")}`,
+        });
+
+      case "get-month ":
+        return res.json({
+          type,
+          userInput: gemResult.userInput,
+          response: `current month is ${moment().format("MMMM")}`,
+        });
+
+      case "youtube-search":
+      case "youtube-play":
+      case "general":
+      case "calculator-open":
+      case "facebook-open":
+      case "weather-show":
+        return res.json({
+          type,
+          userInput: gemResult.userInput,
+          response: gemResult.response,
+        });
+
+      default:
+        return res
+          .status(400)
+          .json({ response: "I didn't understand that command." });
+    }
+  } catch (error) {
+    return res.status(500).json({ response: "ask assistant error" });
   }
 };

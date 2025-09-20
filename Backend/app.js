@@ -26,10 +26,4 @@ import geminiResponse from "./gemini.js";
 app.use("/api/v1/users/auth", authRouter);
 app.use("/api/v1/users/", userRouter);
 
-app.get("/", async (req, res) => {
-  let prompt = req.query.prompt;
-  let data = await geminiResponse(prompt);
-  res.json(data.candidates[0].content.parts[0].text);
-});
-
 export { app };

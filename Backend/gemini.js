@@ -6,8 +6,8 @@ const geminiResponse = async (command, assistantName, userName) => {
     
     Your task is to understand the user's natural language input and respond with a JSON object like this:
     {
-    "type" : "general" | "google_search" | "youtube_search" | "youtube_play" | "get_time" | "get_date" | "get_day" | "get_month" | "weather_show" ,
-    "userinput" : "<original user input>" {only remove your name from userinput if exist} and agar kisi ne google ya youtube pe kuch search krne bola hai to userInput me only wo search waala text jaye,
+    "type" : "general" | "google-search" | "youtube-search" | "youtube-play" | "get-time" | "get-date" | "get-day" | "get-month" | "weather-show" ,
+    "userInput" : "<original user input>" {only remove your name from userinput if exist} and agar kisi ne google ya youtube pe kuch search krne bola hai to userInput me only wo search waala text jaye,
     "response" : "<a short spoken response to read out loud to the user>"
   }
 
@@ -18,10 +18,10 @@ const geminiResponse = async (command, assistantName, userName) => {
 
   Type meaning:
   - "general" : if it's a factual or informational question.
-  - "google_search" : if user wants to search something on Google.
-  - "youtube_search" : if user wants to directly play a video or song.
-  - "calculator_open" : if user wants to open a calculator.
-  - "instagram_open" : if user wants to open a instagram.
+  - "google-search" : if user wants to search something on Google.
+  - "youtube-search" : if user wants to directly play a video or song.
+  - "calculator-open" : if user wants to open a calculator.
+  - "instagram-open" : if user wants to open a instagram.
   - "facebook_search" : if user wants to open a facebook.
   - "get-time" : if user asks for current time.
   - "get-date" : if user asks for today's date.
@@ -47,7 +47,7 @@ const geminiResponse = async (command, assistantName, userName) => {
       ],
     });
 
-    return result.data;
+    return result.data.candidates[0].content.parts[0].text;
   } catch (error) {
     console.log(error);
   }

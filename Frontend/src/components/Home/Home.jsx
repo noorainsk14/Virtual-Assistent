@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import UserDataContext from "../../context/userContext";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Home = () => {
-  const { userData, serverUrl, setUserData } = useContext(UserDataContext);
+  const { userData, serverUrl, setUserData, getGeminiResponse } =
+    useContext(UserDataContext);
   const navigate = useNavigate();
 
   const handleLogOut = async () => {
@@ -20,6 +21,66 @@ const Home = () => {
       setUserData(null);
     }
   };
+
+  const speak = (text) => {
+    const utterence = new SpeechSynthesisUtterance(text);
+    window.speechSynthesis.speak(utterence);
+  };
+
+  const handleCommand = (data) => {
+    const { type, userInput, response } = data;
+    speak(response);
+
+    if (type === "google-search") {
+      const query = encodeURIComponent(userInput);
+      window.open(`https://www.google.com/search?q=${query}`, "_blank");
+    }
+
+    if (type === "calculator-open") {
+      window.open(`https://www.google.com/search?q=calculator`, "_blank");
+    }
+
+    if (type === "instagram-open") {
+      window.open(`https://www.instagram.com`, "_blank");
+
+      if (type === "facebook-open") {
+        window.open(`https://www.facebook.com`, "_blank");
+      }
+
+      if (type === "youtube-search" || type === "youtube-play") {
+        const query = encodeURIComponent(userInput);
+        window.open(
+          `https://www.youtube.com/results?search_query=${query}`,
+          "_blank"
+        );
+      }
+    }
+  };
+
+  useEffect(() => {
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.lang = "en-US";
+
+    recognition.onresult = async (e) => {
+      const transcript = e.results[e.results.length - 1][0].transcript.trim();
+
+      console.log("heard :" + transcript);
+
+      if (
+        transcript.toLowerCase().includes(userData.assistantName.toLowerCase())
+      ) {
+        const data = await getGeminiResponse(transcript);
+        console.log(data);
+        handleCommand(data);
+      }
+    };
+
+    recognition.start();
+  }, []);
 
   return (
     <div className="w-full h-[100vh] bg-gradient-to-t from-[black] to-[#02023d] flex justify-center items-center flex-col gap-[15px]">

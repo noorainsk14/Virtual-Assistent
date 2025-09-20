@@ -21,6 +21,30 @@ function UserContextProvider({ children }) {
     }
   };
 
+  const getGeminiResponse = async (command) => {
+    try {
+      const result = await axios.post(
+        `${serverUrl}/ask-to-assistant`,
+        { command },
+        { withCredentials: true }
+      );
+      if (!result?.data) {
+        console.warn("No data received from assistant.");
+        return { response: "No response from assistant." };
+      }
+
+      return result.data;
+    } catch (error) {
+      console.error(
+        "getGeminiResponse error:",
+        error?.response?.data || error.message
+      );
+      return {
+        response: "Sorry, something went wrong while talking to assistant.",
+      };
+    }
+  };
+
   useEffect(() => {
     handleCurrentUser();
   }, []);
@@ -35,6 +59,7 @@ function UserContextProvider({ children }) {
     setBackEndImage,
     selectedImage,
     setSelectedImage,
+    getGeminiResponse,
   };
 
   return (
