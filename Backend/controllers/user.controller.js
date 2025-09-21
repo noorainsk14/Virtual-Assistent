@@ -53,6 +53,8 @@ export const askToAssistant = async (req, res) => {
     const { command } = req.body;
 
     const user = await User.findById(req.userId);
+    user.history.push(command);
+    user.save();
     const userName = user.username;
     const assistantName = user.assistantName;
     const result = await geminiResponse(command, assistantName, userName);
@@ -87,7 +89,7 @@ export const askToAssistant = async (req, res) => {
           response: `current day is ${moment().format("dddd")}`,
         });
 
-      case "get-month ":
+      case "get-month":
         return res.json({
           type,
           userInput: gemResult.userInput,
@@ -96,9 +98,11 @@ export const askToAssistant = async (req, res) => {
 
       case "youtube-search":
       case "youtube-play":
+      case "youtube-open":
       case "general":
       case "calculator-open":
       case "facebook-open":
+      case "instagram-open":
       case "weather-show":
         return res.json({
           type,

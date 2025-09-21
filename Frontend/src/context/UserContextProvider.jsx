@@ -15,7 +15,6 @@ function UserContextProvider({ children }) {
         withCredentials: true,
       });
       setUserData(result.data);
-      console.log(result);
     } catch (error) {
       console.log(error);
     }
@@ -40,7 +39,7 @@ function UserContextProvider({ children }) {
         error?.response?.data || error.message
       );
       return {
-        response: "Sorry, something went wrong while talking to assistant.",
+        response: "Sorry, something wrong ! I am not able to understand.",
       };
     }
   };

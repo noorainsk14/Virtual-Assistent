@@ -6,7 +6,7 @@ const geminiResponse = async (command, assistantName, userName) => {
     
     Your task is to understand the user's natural language input and respond with a JSON object like this:
     {
-    "type" : "general" | "google-search" | "youtube-search" | "youtube-play" | "get-time" | "get-date" | "get-day" | "get-month" | "weather-show" ,
+    "type" : "general" | "google-search" | youtube-open | "youtube-search" | "youtube-play" | "get-time" | "get-date" | "get-day" | "get-month" | "weather-show" ,
     "userInput" : "<original user input>" {only remove your name from userinput if exist} and agar kisi ne google ya youtube pe kuch search krne bola hai to userInput me only wo search waala text jaye,
     "response" : "<a short spoken response to read out loud to the user>"
   }
@@ -17,12 +17,15 @@ const geminiResponse = async (command, assistantName, userName) => {
   - "response" : A short voice-friendly reply, e.g., "Sure, playing it now", "Here what I found", "Today is Tuesday", etc.
 
   Type meaning:
-  - "general" : if it's a factual or informational question.
+  - "general" : if it's a factual or informational question. aur agar koi aisa question puchta hai jiska answer tumhe pata h to usko bhi general category me rakho bas short me answer dena.
   - "google-search" : if user wants to search something on Google.
+  - "google-open" : if user wants to open google on chrome.
   - "youtube-search" : if user wants to directly play a video or song.
+  - "youtube-open" : if user wants to directly open a youtube.
   - "calculator-open" : if user wants to open a calculator.
+  - "weather-show" : if user wants to see weather.
   - "instagram-open" : if user wants to open a instagram.
-  - "facebook_search" : if user wants to open a facebook.
+  - "facebook-search" : if user wants to open a facebook.
   - "get-time" : if user asks for current time.
   - "get-date" : if user asks for today's date.
   - "get-day" : if user asks for what day it is.
@@ -31,6 +34,7 @@ const geminiResponse = async (command, assistantName, userName) => {
   Important: 
   - Use "{author name}" agar koi puche tumhe kisne banaya
   - Only respond with JSON object, nothing else
+
 
     now your userInput - ${command}
     
