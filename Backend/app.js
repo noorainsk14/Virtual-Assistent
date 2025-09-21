@@ -6,7 +6,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: https://virtual-assistent.onrender.com,
+    origin: process.env.CORS_ORIGIN,
     credentials: true,
   })
 );
