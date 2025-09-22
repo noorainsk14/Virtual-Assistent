@@ -32,7 +32,6 @@ const Customize2 = () => {
       });
 
       setLoading(false);
-      console.log(result.data);
       setUserData(result.data);
       navigate("/");
     } catch (error) {

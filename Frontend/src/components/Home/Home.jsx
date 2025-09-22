@@ -29,7 +29,6 @@ const Home = () => {
         withCredentials: true,
       });
       navigate("/sign-in");
-      console.log(result);
     } catch (error) {
       console.log(error);
     } finally {
