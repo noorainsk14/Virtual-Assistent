@@ -4,7 +4,7 @@ import connectToDb from "./config/db.config.js";
 
 connectToDb()
   .then(() => {
-    app.listen(process.env.PORT || 8080, () => {
+    app.listen(process.env.PORT || 8000, () => {
       console.log(`Server is running at port: ${process.env.PORT}`);
     });
   })
