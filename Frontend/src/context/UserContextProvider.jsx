@@ -3,7 +3,7 @@ import axios from "axios";
 import UserDataContext from "./userContext.js";
 
 function UserContextProvider({ children }) {
-  const serverUrl = "https://virtual-assistent-backend.onrender.com";
+  const serverUrl = `https://virtual-assistent-backend.onrender.com/api/v1/users`;
   const [userData, setUserData] = useState(null);
   const [frontEndImage, setFrontEndImage] = useState(null);
   const [backEndImage, setBackEndImage] = useState(null);
